@@ -53,8 +53,8 @@
                             <td>${medico.getEspecialidad()}</td> <!-- Actualizado -->
                             <td>${medico.getTarifa()}</td> <!-- Actualizado -->
                             <td class="row"> 
-                                <a class="btn btn-outline-warning"  href="./Medicos?accion=editar&id=${medico.getIdMedico()}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> &nbsp;
-                                <a class="btn btn-outline-danger" href="./Medicos?accion=eliminar&id=${medico.getIdMedico()}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                <a class="btn btn-outline-warning"  href="./MedicosServlet?accion=editar&id=${medico.getIdMedico()}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a> &nbsp;
+                                <a class="btn btn-outline-danger" href="./MedicosServlet?accion=eliminar&id=${medico.getIdMedico()}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                             </td>
                         </tr>
                     </c:forEach>

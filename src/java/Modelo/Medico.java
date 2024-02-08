@@ -13,7 +13,7 @@ public class Medico {
 
     private Integer idMedico;
     private String nombre;
-    private Short sala;
+    private Float sala;
     private String especialidad;
     private Integer tarifa;
 
@@ -45,11 +45,11 @@ public class Medico {
         this.nombre = nombre;
     }
 
-    public Short getSala() {
+    public Float getSala() {
         return sala;
     }
 
-    public void setSala(Short sala) {
+    public void setSala(Float sala) {
         this.sala = sala;
     }
 
