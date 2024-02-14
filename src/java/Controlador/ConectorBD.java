@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.Medico;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -28,6 +29,7 @@ public class ConectorBD {
     private final String login = "root";
     private final String password = "";
     Statement stmt = null;
+    PreparedStatement pstmt = null;
 
     public ConectorBD() {
     }
@@ -72,17 +74,16 @@ public class ConectorBD {
                 Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         return b;
     }
 
-    public boolean altaAlbum(String titulo, String autor) {
+    public boolean altaMedico(String nombre, Float sala, String especialidad, Integer tarifa) {
         boolean b = false;
         String query;
-
-        query = "INSERT INTO `album` ( `titulo`,`autor`) VALUES "
-                + "( '" + titulo + "', '" + autor + "')";
-
+        
+        query = "INSERT INTO `medico` ( `titulo`,`autor`,`especialidad`,`tarifa`) VALUES "
+                + "( '" + nombre + "', '" + sala + "','" + especialidad + "','" + tarifa + "')";
+        
         try {
             System.out.println("Conexion: " + conn.getCatalog());
             stmt = conn.createStatement();
@@ -101,7 +102,7 @@ public class ConectorBD {
 
         try {
             Statement orden = conn.createStatement();
-            ResultSet query = orden.executeQuery("select * from Album where id_album = '" + id + "'");
+            ResultSet query = orden.executeQuery("select * from medico where id_medico = '" + id + "'");
 
             if (query.next()) {
                 medico = new Medico();
@@ -161,7 +162,7 @@ public class ConectorBD {
 
         try {
             Statement orden = conn.createStatement();
-            ResultSet query = orden.executeQuery("select * from album");
+            ResultSet query = orden.executeQuery("select * from medico");
 
             while (query.next()) {
                 Medico medico = new Medico();

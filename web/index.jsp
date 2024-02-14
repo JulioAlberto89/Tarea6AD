@@ -18,7 +18,7 @@
     <body>
 
         <h1 class="text-center">Hospital</h1>
-        <h1 class="text-center"><a href="MedicoServlet">Añadir médicos</a></h1>
+        <h1 class="text-center"><a href="./MedicoServlet">Añadir médicos</a></h1>
 
     </body>
 </html>

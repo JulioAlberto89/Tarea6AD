@@ -62,7 +62,6 @@ public class MedicoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
 
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -72,17 +71,16 @@ public class MedicoServlet extends HttpServlet {
         if (accion != null) {
             switch (accion) {
                 case "editar":
-                    this.editarAlbum(request, response);
+                    this.editarMedico(request, response);
                     break;
 
                 case "eliminar":
-                    this.eliminarAlbum(request, response);
+                    this.eliminarMedico(request, response);
                     break;
 
                 default:
                     this.cargarPagina(request, response);
             }
-
         } else {
             this.cargarPagina(request, response);
         }
@@ -90,16 +88,16 @@ public class MedicoServlet extends HttpServlet {
 
     private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        System.out.println("gjyujuyfjuyjyufjfh");
         bd = new ConectorBD();
         if (bd.conectar()) {
             List<Medico> medicos = bd.listar();
-            System.out.println("Hospital" + medicos);
+            System.out.println("Medico" + medicos);
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             request.setAttribute("medicos", medicos);
 
             request.getRequestDispatcher("./medicos.jsp").forward(request, response);
-            return;
         }
     }
 
@@ -122,35 +120,29 @@ public class MedicoServlet extends HttpServlet {
         if (accion != null) {
             switch (accion) {
                 case "insertar":
-                    this.insertarAlbum(request, response);
+                    this.insertarMedico(request, response);
                     break;
                 case "modificar":
-
-                    this.modificarAlbum(request, response);
+                    this.modificarMedico(request, response);
                     break;
-
                 case "editar":
-                    this.editarAlbum(request, response);
+                    this.editarMedico(request, response);
                     break;
-
                 case "eliminar":
-                    this.eliminarAlbum(request, response);
+                    this.eliminarMedico(request, response);
                     break;
-
                 default:
                     this.cargarPagina(request, response);
             }
-
         } else {
             this.cargarPagina(request, response);
         }
-
     }
 
-    protected void modificarAlbum(HttpServletRequest request, HttpServletResponse response)
+    protected void modificarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String id = request.getParameter("id");
+        String id = request.getParameter("id_medico");
         String nombre = request.getParameter("nombre");
         String sala = request.getParameter("sala");
         String especialidad = request.getParameter("especialidad");
@@ -160,16 +152,14 @@ public class MedicoServlet extends HttpServlet {
             if (bd.actMedico(Integer.parseInt(id), nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
                 System.out.println("modificado");
             }
-
         }
         this.cargarPagina(request, response);
-
     }
 
-    protected void editarAlbum(HttpServletRequest request, HttpServletResponse response)
+    protected void editarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String id = request.getParameter("id");
+        String id = request.getParameter("id_medico");
         Medico medico = new Medico();
         if (bd.conectar()) {
             medico = bd.buscarMedico(id);
@@ -182,35 +172,36 @@ public class MedicoServlet extends HttpServlet {
 
     }
 
-    protected void eliminarAlbum(HttpServletRequest request, HttpServletResponse response)
+    protected void eliminarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id");
+        String id = request.getParameter("id_medico");
         if (bd.conectar()) {
             if (bd.eliminarMedico(Integer.parseInt(id))) {
                 this.cargarPagina(request, response);
             }
         }
-
         this.cargarPagina(request, response);
-
     }
 
-    protected void insertarAlbum(HttpServletRequest request, HttpServletResponse response)
+    protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String id = request.getParameter("id");
+        //String id = request.getParameter("id");
         String nombre = request.getParameter("titulo");
         String sala = request.getParameter("sala");
         String especialidad = request.getParameter("especialidad");
         String tarifa = request.getParameter("tarifa");
         if (bd.conectar()) {
-            if (bd.actMedico(Integer.parseInt(id), nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
+            if (bd.altaMedico(nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
                 this.cargarPagina(request, response);
             }
+            else{
+                System.out.println("Error al introducir medico");
+            }
+        }else{
+            System.out.println("No entro");
         }
-
     }
-
     /**
      * Returns a short description of the servlet.
      *
