@@ -81,7 +81,7 @@ public class ConectorBD {
         boolean b = false;
         String query;
         
-        query = "INSERT INTO `medico` ( `titulo`,`autor`,`especialidad`,`tarifa`) VALUES "
+        query = "INSERT INTO `medico` ( `nombre`,`sala`,`especialidad`,`tarifa`) VALUES "
                 + "( '" + nombre + "', '" + sala + "','" + especialidad + "','" + tarifa + "')";
         
         try {

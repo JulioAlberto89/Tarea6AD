@@ -26,7 +26,7 @@
 
             <div class="row">
                 <section class="col-md-3">
-                    <form action="./Medicos?accion=insertar" method="POST" accept-charset="UTF-8">
+                    <form action="./MedicoServlet?accion=insertar" method="POST" accept-charset="UTF-8">
 
                         <div><input type="hidden" name="id" value="${medico.getIdMedico()}"></div>
                         <div class="form-group"><label for="nombre">Nombre:</label><input class="form-control" type="text" name="nombre" value="" ></div>

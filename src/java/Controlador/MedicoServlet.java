@@ -63,6 +63,7 @@ public class MedicoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("Metodo get");
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
@@ -87,8 +88,6 @@ public class MedicoServlet extends HttpServlet {
     }
 
     private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        System.out.println("gjyujuyfjuyjyufjfh");
         bd = new ConectorBD();
         if (bd.conectar()) {
             List<Medico> medicos = bd.listar();
@@ -142,6 +141,7 @@ public class MedicoServlet extends HttpServlet {
     protected void modificarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("Se mete");
         String id = request.getParameter("id_medico");
         String nombre = request.getParameter("nombre");
         String sala = request.getParameter("sala");
@@ -159,6 +159,7 @@ public class MedicoServlet extends HttpServlet {
     protected void editarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        System.out.println("se mete en editar");
         String id = request.getParameter("id_medico");
         Medico medico = new Medico();
         if (bd.conectar()) {
@@ -187,21 +188,21 @@ public class MedicoServlet extends HttpServlet {
             throws ServletException, IOException {
 
         //String id = request.getParameter("id");
-        String nombre = request.getParameter("titulo");
+        String nombre = request.getParameter("nombre");
         String sala = request.getParameter("sala");
         String especialidad = request.getParameter("especialidad");
         String tarifa = request.getParameter("tarifa");
         if (bd.conectar()) {
             if (bd.altaMedico(nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
                 this.cargarPagina(request, response);
-            }
-            else{
+            } else {
                 System.out.println("Error al introducir medico");
             }
-        }else{
+        } else {
             System.out.println("No entro");
         }
     }
+
     /**
      * Returns a short description of the servlet.
      *
