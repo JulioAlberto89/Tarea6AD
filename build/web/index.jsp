@@ -14,11 +14,44 @@
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    </head>
-    <body>
+        <style>
+            body {
+                background-color: #f5f5f5; /* Color de fondo suave */
+            }
 
-        <h1 class="text-center">Hospital</h1>
-        <h1 class="text-center"><a href="./MedicoServlet">Añadir médicos</a></h1>
+            .center-box {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            }
+        </style>
+    </style>    
+</head>
+<body>
 
-    </body>
+    <div class="container">
+        <div class="center-box col-md-6">
+            <h2 class="text-center">Gestión Médicos</h2>
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+            </form>
+            <p class="text-center mt-3">¿Aún no tienes cuenta? <a href="#">Regístrate aquí</a></p>
+            <p class="text-center mt-3"><a href="./MedicoServlet">Entrar como invitado</a></p>
+        </div>
+    </div>
+
+</body>
 </html>
