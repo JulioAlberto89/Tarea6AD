@@ -38,7 +38,7 @@
                     </form>
                 </section>
 
-                <section class="col-md-9">
+                <section class="col-md-6">
                     <table class="table table-sm table-hover">
                         <thead class="thead-dark">
                         <th>id</th>
@@ -64,6 +64,23 @@
                             </c:forEach>
                         </tbody>
                     </table>
+                </section>
+                <section class="col-md-3">
+                    <!-- Contenedor del total de tarifas -->
+                    <div class="card bg-danger text-white">
+                        <div class="card-body">
+                            <h5 class="card-title">Total de Tarifas</h5>
+                            <p class="card-text">${totalTarifas}</p>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor de la cantidad de médicos -->
+                    <div class="card bg-success text-white mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Cantidad de Médicos</h5>
+                            <p class="card-text">${cantidadMedicos}</p>
+                        </div>
+                    </div>
                 </section>
             </div>
         </div>
