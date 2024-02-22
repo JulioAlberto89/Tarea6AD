@@ -16,7 +16,7 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <style>
             body {
-                background-color: #f5f5f5; /* Color de fondo suave */
+                background-color: #f5f5f5;
             }
 
             .center-box {
@@ -48,7 +48,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
             </form>
-            <p class="text-center mt-3">¿Aún no tienes cuenta? <a href="#">Regístrate aquí</a></p>
+            <p class="text-center mt-3">¿Aún no tienes cuenta? <a href="./UsuarioServlet">Regístrate aquí</a></p>
+
             <p class="text-center mt-3"><a href="./MedicoServlet">Entrar como invitado</a></p>
         </div>
     </div>
