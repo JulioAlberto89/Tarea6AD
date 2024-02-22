@@ -148,15 +148,16 @@ public class MedicoServlet extends HttpServlet {
         String especialidad = request.getParameter("especialidad");
         String tarifa = request.getParameter("tarifa");
 
-        /*if (bd.conectar()) {
-            if (bd.actMedico(Integer.parseInt(id), nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
-                System.out.println("modificado");
-            }
-        }
-         */
         if (id != null && !id.isEmpty() && sala != null && !sala.isEmpty() && tarifa != null && !tarifa.isEmpty()) {
-            if (bd.actMedico(Integer.parseInt(id), nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
-                System.out.println("modificado");
+            try {
+                if (bd.conectar()) {
+                    if (bd.actMedico(Integer.parseInt(id), nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
+                        System.out.println("modificado");
+                    }
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Error: No se pudo convertir algún valor a número.");
+                e.printStackTrace();
             }
         } else {
             // Manejar el caso en que alguno de los parámetros está vacío
@@ -173,7 +174,7 @@ public class MedicoServlet extends HttpServlet {
         if (bd.conectar()) {
             medico = bd.buscarMedico(id);
         }
-        
+
         request.setAttribute("amod", medico);
         String jspEditar = "./editarmedicos.jsp";
         request.getRequestDispatcher(jspEditar).forward(request, response);

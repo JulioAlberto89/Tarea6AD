@@ -29,22 +29,22 @@
 
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
-                            <input class="form-control" id="nombre" type="text" name="nombre" value="${amod.nombre}">
+                            <input class="form-control" id="nombre" type="text" name="nombre" value="${amod.getNombre()}">
                         </div>
 
                         <div class="form-group">
                             <label for="sala">Sala:</label>
-                            <input class="form-control" id="sala" type="text" name="sala"  value="${amod.sala}">
+                            <input class="form-control" id="sala" type="text" name="sala"  value="${amod.getSala()}">
                         </div>
 
                         <div class="form-group">
                             <label for="especialidad">Especialidad:</label>
-                            <input class="form-control" id="especialidad" type="text" name="especialidad" value="${amod.especialidad}">
+                            <input class="form-control" id="especialidad" type="text" name="especialidad" value="${amod.getEspecialidad()}">
                         </div>
 
                         <div class="form-group">
                             <label for="tarifa">Tarifa:</label>
-                            <input class="form-control" id="tarifa" type="text" name="tarifa" value="${amod.tarifa}">
+                            <input class="form-control" id="tarifa" type="text" name="tarifa" value="${amod.getTarifa()}">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
