@@ -77,6 +77,7 @@ public class MedicoServlet extends HttpServlet {
 
                 case "eliminar":
                     this.eliminarMedico(request, response);
+                    System.out.println("Id médico: " + request.getParameter("id"));
                     break;
 
                 default:
@@ -141,17 +142,25 @@ public class MedicoServlet extends HttpServlet {
     protected void modificarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("Se mete");
-        String id = request.getParameter("id_medico");
+        String id = request.getParameter("id");
         String nombre = request.getParameter("nombre");
         String sala = request.getParameter("sala");
         String especialidad = request.getParameter("especialidad");
         String tarifa = request.getParameter("tarifa");
 
-        if (bd.conectar()) {
+        /*if (bd.conectar()) {
             if (bd.actMedico(Integer.parseInt(id), nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
                 System.out.println("modificado");
             }
+        }
+         */
+        if (id != null && !id.isEmpty() && sala != null && !sala.isEmpty() && tarifa != null && !tarifa.isEmpty()) {
+            if (bd.actMedico(Integer.parseInt(id), nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
+                System.out.println("modificado");
+            }
+        } else {
+            // Manejar el caso en que alguno de los parámetros está vacío
+            System.out.println("Alguno de los parámetros está vacío. No se puede modificar el médico.");
         }
         this.cargarPagina(request, response);
     }
@@ -159,23 +168,23 @@ public class MedicoServlet extends HttpServlet {
     protected void editarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        System.out.println("se mete en editar");
-        String id = request.getParameter("id_medico");
+        String id = request.getParameter("id");
         Medico medico = new Medico();
         if (bd.conectar()) {
             medico = bd.buscarMedico(id);
         }
-
+        
         request.setAttribute("amod", medico);
         String jspEditar = "./editarmedicos.jsp";
         request.getRequestDispatcher(jspEditar).forward(request, response);
         return;
-
     }
 
     protected void eliminarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String id = request.getParameter("id_medico");
+        System.out.println("Método eliminar médico");
+        System.out.println("Id médico: " + request.getParameter("id"));
+        String id = request.getParameter("id");
         if (bd.conectar()) {
             if (bd.eliminarMedico(Integer.parseInt(id))) {
                 this.cargarPagina(request, response);

@@ -25,26 +25,26 @@
             <div class="row">
                 <section class="col-md-6 offset-md-3">
                     <form action="./MedicoServlet?accion=modificar&id=${amod.getIdMedico()}" method="POST" accept-charset="UTF-8">
-                        <input type="hidden" name="id_medico" value="${amod.idMedico}">
+                        <div><input type="hidden" name="id" value="${amod.idMedico}"></div>
 
                         <div class="form-group">
                             <label for="nombre">Nombre:</label>
-                            <input class="form-control" type="text" name="nombre" value="${amod.getNombre}">
+                            <input class="form-control" id="nombre" type="text" name="nombre" value="${amod.nombre}">
                         </div>
 
                         <div class="form-group">
                             <label for="sala">Sala:</label>
-                            <input class="form-control" type="text" name="sala"  value="${amod.getSala}">
+                            <input class="form-control" id="sala" type="text" name="sala"  value="${amod.sala}">
                         </div>
 
                         <div class="form-group">
                             <label for="especialidad">Especialidad:</label>
-                            <input class="form-control" type="text" name="especialidad" value="${amod.getEspecialidad}">
+                            <input class="form-control" id="especialidad" type="text" name="especialidad" value="${amod.especialidad}">
                         </div>
 
                         <div class="form-group">
                             <label for="tarifa">Tarifa:</label>
-                            <input class="form-control" type="text" name="tarifa" value="${amod.getTarifa}">
+                            <input class="form-control" id="tarifa" type="text" name="tarifa" value="${amod.tarifa}">
                         </div>
 
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
