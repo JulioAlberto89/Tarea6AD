@@ -46,7 +46,7 @@
                     <label for="password">Contraseña:</label>
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">Iniciar Sesión</button>
+                <button type="submit" class="btn btn-primary btn-block" name="accion" value="buscar">Iniciar Sesión</button>
             </form>
             <p class="text-center mt-3">¿Aún no tienes cuenta? <a href="./UsuarioServlet">Regístrate aquí</a></p>
 

@@ -5,6 +5,7 @@
  */
 package Controlador;
 
+import Modelo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
 public class UsuarioServlet extends HttpServlet {
+    ConectorBD bd;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,7 +33,7 @@ public class UsuarioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Aquí procesas la solicitud para el registro de usuarios
+        // Aquí puedes procesar la solicitud para el registro de usuarios
         // Por ejemplo, puedes obtener los parámetros del formulario
         String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
@@ -39,8 +41,8 @@ public class UsuarioServlet extends HttpServlet {
 
         // Luego, puedes realizar cualquier validación necesaria de los datos del usuario
         // Por ejemplo, puedes verificar si el email ya está registrado en la base de datos
-        // Si todo está bien, redirige al usuario a la página de registro
-        response.sendRedirect("registrarusuario.jsp?from=index");
+        // Si todo está bien, puedes redirigir al usuario a otra página, por ejemplo, una página de inicio de sesión
+        response.sendRedirect("registrarusuario.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -55,7 +57,96 @@ public class UsuarioServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        System.out.println("Metodo get");
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+
+        String accion = request.getParameter("accion");
+
+        if (accion != null) {
+            switch (accion) {
+                case "registrar":
+                    this.insertarUsuario(request, response);
+                    break;
+
+                case "buscar":
+                    this.buscarUsuario(request, response);
+                    System.out.println("Id médico: " + request.getParameter("id"));
+                    break;
+
+                default:
+                    this.cargarPagina(request, response);
+            }
+        } else {
+            this.cargarPagina(request, response);
+        }
+    }
+    
+    private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        bd = new ConectorBD();
+        if (bd.conectar()) {
+            /*
+            List<Medico> medicos = bd.listar();
+
+            // Calcula la suma de todas las tarifas
+            float totalTarifas = 0;
+            for (Medico medico : medicos) {
+                totalTarifas += medico.getTarifa();
+            }
+
+            // Guarda la suma de todas las tarifas en un atributo de la solicitud
+            request.setAttribute("totalTarifas", totalTarifas);
+
+            // Guarda el tamaño de la lista de médicos en un atributo de la solicitud
+            request.setAttribute("cantidadMedicos", medicos.size());
+
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            request.setAttribute("medicos", medicos);
+            */
+
+            request.getRequestDispatcher("./registrarusuario.jsp").forward(request, response);
+        }
+    }
+    
+    protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        //String id = request.getParameter("id");
+        String nombre = request.getParameter("nombre");
+        String usuario = request.getParameter("usuario");
+        String clave = request.getParameter("clave");
+        if (bd.conectar()) {
+            if (bd.altaUsuario(nombre, usuario, clave)) {
+                this.cargarPagina(request, response);
+            } else {
+                System.out.println("Error al introducir usuario");
+            }
+        } else {
+            System.out.println("No entro");
+        }
+    }
+
+    protected void buscarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String usuario = request.getParameter("usuario");
+        String clave = request.getParameter("clave");
+
+        // Crear una instancia de la clase ConectorBD
+        ConectorBD bd = new ConectorBD();
+
+        // Llamar al método buscarUsuario de ConectorBD y almacenar el resultado en un objeto Usuario
+        Usuario usuarioEncontrado = bd.buscarUsuario(usuario, clave);
+
+        if (usuarioEncontrado != null) {
+            // Si el usuario se encontró, cargar la página
+            this.cargarPagina(request, response);
+        } else {
+            // Si no se encontró el usuario, mostrar un mensaje de error
+            System.out.println("Error: Usuario o contraseña incorrectos");
+        }
     }
 
     /**

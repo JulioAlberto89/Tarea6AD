@@ -203,12 +203,15 @@ public class ConectorBD {
         return b;
     }
 
-    public Usuario buscarUsuario(String id) {
+    public Usuario buscarUsuario(String NombreUsuario, String clave) {
         Usuario usuario = null;
 
         try {
-            Statement orden = conn.createStatement();
-            ResultSet query = orden.executeQuery("select * from usuario where IDUSUARIO = '" + id + "'");
+            PreparedStatement statement = conn.prepareStatement("SELECT * FROM usuario WHERE usuario = ? AND clave = ?");
+            statement.setString(1, NombreUsuario);
+            statement.setString(2, clave);
+
+            ResultSet query = statement.executeQuery();
 
             if (query.next()) {
                 usuario = new Usuario();
@@ -217,7 +220,6 @@ public class ConectorBD {
                 usuario.setNombre(query.getString("nombre"));
                 usuario.setUsuario(query.getString("usuario"));
                 usuario.setClave(query.getString("clave"));
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);

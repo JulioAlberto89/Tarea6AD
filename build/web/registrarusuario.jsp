@@ -37,24 +37,24 @@
             <div class="center-box col-md-6">
                 <h2 class="text-center">Gestión Médicos</h2>
                 <h5 class="text-center mb-4">Registro de Usuario</h5>
-                <form action="#" method="POST">
+                <form action="UsuarioServlet" method="GET">
                     <div class="form-group">
                         <label for="nombre">Nombre:</label>
                         <input type="text" class="form-control" id="nombre" name="nombre" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email:</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="usuario" name="usuario" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Contraseña:</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="clave" name="clave" required>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword">Repetir Contraseña:</label>
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">Registro</button>
+                    <button type="submit" class="btn btn-primary btn-block" name="accion" value="registrar">Registro</button>
                 </form>
                 <p class="text-center mt-3"><a href="index.jsp">Volver al inicio</a></p>
             </div>
