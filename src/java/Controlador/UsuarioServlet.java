@@ -166,7 +166,7 @@ public class UsuarioServlet extends HttpServlet {
 
     protected void buscarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         String usuario = request.getParameter("usuario");
         String clave = request.getParameter("clave");
 
@@ -177,11 +177,11 @@ public class UsuarioServlet extends HttpServlet {
         boolean usuarioExiste = bd.existeUsuario(usuario, clave);
 
         if (usuarioExiste) {
-            // Si el usuario se encontró, cargar la página
+            // Si el usuario se encontró, cargar la página de médicos
             this.cargarPaginaMedicos(request, response);
         } else {
-            // Si no se encontró el usuario, mostrar un mensaje de error
-            System.out.println("Error: Usuario o contraseña incorrectos");
+            // Si no se encontró el usuario, redirigir de vuelta a la página de inicio de sesión con un mensaje de error
+            response.sendRedirect("./index.jsp?error=Usuario o contraseña incorrectos");
         }
     }
 
