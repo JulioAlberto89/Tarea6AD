@@ -37,14 +37,14 @@
     <div class="container">
         <div class="center-box col-md-6">
             <h2 class="text-center">Gestión Médicos</h2>
-            <form action="#" method="POST">
+            <form action="./UsuarioServlet?accion=buscar" method="GET">
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
+                    <label for="usuario">Email:</label>
+                    <input type="usuario" class="form-control" id="usuario" name="usuario" required>
                 </div>
                 <div class="form-group">
-                    <label for="password">Contraseña:</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
+                    <label for="clave">Contraseña:</label>
+                    <input type="clave" class="form-control" id="clave" name="clave" required>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block" name="accion" value="buscar">Iniciar Sesión</button>
             </form>

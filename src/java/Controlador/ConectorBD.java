@@ -203,29 +203,27 @@ public class ConectorBD {
         return b;
     }
 
-    public Usuario buscarUsuario(String NombreUsuario, String clave) {
-        Usuario usuario = null;
+    public boolean existeUsuario(String nombreUsuario, String clave) {
+        boolean usuarioExiste = false;
 
+        conectar();
+        
         try {
-            PreparedStatement statement = conn.prepareStatement("SELECT * FROM usuario WHERE usuario = ? AND clave = ?");
-            statement.setString(1, NombreUsuario);
+            PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) AS count FROM usuario WHERE usuario = ? AND clave = ?");
+            statement.setString(1, nombreUsuario);
             statement.setString(2, clave);
 
             ResultSet query = statement.executeQuery();
 
             if (query.next()) {
-                usuario = new Usuario();
-
-                usuario.setIdusuario(Integer.parseInt(query.getString("IDUSUARIO")));
-                usuario.setNombre(query.getString("nombre"));
-                usuario.setUsuario(query.getString("usuario"));
-                usuario.setClave(query.getString("clave"));
+                int count = query.getInt("count");
+                usuarioExiste = count > 0;
             }
         } catch (SQLException ex) {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        return usuario;
+        return usuarioExiste;
     }
 
 }

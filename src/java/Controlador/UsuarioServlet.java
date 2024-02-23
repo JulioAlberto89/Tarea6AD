@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
 public class UsuarioServlet extends HttpServlet {
+
     ConectorBD bd;
 
     /**
@@ -72,7 +73,6 @@ public class UsuarioServlet extends HttpServlet {
 
                 case "buscar":
                     this.buscarUsuario(request, response);
-                    System.out.println("Id médico: " + request.getParameter("id"));
                     break;
 
                 default:
@@ -82,7 +82,7 @@ public class UsuarioServlet extends HttpServlet {
             this.cargarPagina(request, response);
         }
     }
-    
+
     private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
         if (bd.conectar()) {
@@ -104,12 +104,20 @@ public class UsuarioServlet extends HttpServlet {
             request.setCharacterEncoding("UTF-8");
             response.setCharacterEncoding("UTF-8");
             request.setAttribute("medicos", medicos);
-            */
+             */
 
             request.getRequestDispatcher("./registrarusuario.jsp").forward(request, response);
         }
     }
     
+    private void cargarPaginaMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        bd = new ConectorBD();
+        if (bd.conectar()) {
+            
+            request.getRequestDispatcher("./medicos.jsp").forward(request, response);
+        }
+    }
+
     protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -137,12 +145,12 @@ public class UsuarioServlet extends HttpServlet {
         // Crear una instancia de la clase ConectorBD
         ConectorBD bd = new ConectorBD();
 
-        // Llamar al método buscarUsuario de ConectorBD y almacenar el resultado en un objeto Usuario
-        Usuario usuarioEncontrado = bd.buscarUsuario(usuario, clave);
+        // Verificar si el usuario existe
+        boolean usuarioExiste = bd.existeUsuario(usuario, clave);
 
-        if (usuarioEncontrado != null) {
+        if (usuarioExiste) {
             // Si el usuario se encontró, cargar la página
-            this.cargarPagina(request, response);
+            this.cargarPaginaMedicos(request, response);
         } else {
             // Si no se encontró el usuario, mostrar un mensaje de error
             System.out.println("Error: Usuario o contraseña incorrectos");
