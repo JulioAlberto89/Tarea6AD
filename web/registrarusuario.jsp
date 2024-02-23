@@ -59,6 +59,22 @@
                 <p class="text-center mt-3"><a href="index.jsp">Volver al inicio</a></p>
             </div>
         </div>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Verifica si hay un parámetro de error en la URL y muestra un SweetAlert si es así -->
+        <%
+            String error = request.getParameter("error");
+            if (error != null && !error.isEmpty()) {
+        %>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Datos de registro incorrectos'
+            });
+        </script>
+        <%
+            }
+        %>
 
     </body>
 </html>

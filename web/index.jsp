@@ -63,7 +63,7 @@
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
-            text: '<%= error%>'
+            text: 'Datos de usuario incorrectos'
         });
     </script>
     <%

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 public class UsuarioServlet extends HttpServlet {
 
     ConectorBD bd;
+    Codificacion code = new Codificacion();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -146,6 +147,7 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
+    /*
     protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -163,10 +165,42 @@ public class UsuarioServlet extends HttpServlet {
             System.out.println("No entro");
         }
     }
+     */
+    protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String nombre = request.getParameter("nombre");
+        String usuario = request.getParameter("usuario");
+        String clave = request.getParameter("clave");
+        String confirmarClave = request.getParameter("confirmPassword");
+
+        // Verificar si las contraseñas coinciden
+        if (!clave.equals(confirmarClave)) {
+            // Si las contraseñas no coinciden, redirigir de vuelta a la página de registro con un mensaje de error
+            response.sendRedirect("./registrarusuario.jsp?error=Las contraseñas no coinciden");
+            return; // Terminar la ejecución del método
+        }
+
+        // Crear una instancia de la clase ConectorBD
+        ConectorBD bd = new ConectorBD();
+
+        if (bd.conectar()) {
+            if (bd.altaUsuario(nombre, usuario, code.encode(clave))) {
+                // Si se insertó correctamente, cargar la página de médicos
+                this.cargarPaginaMedicos(request, response);
+            } else {
+                // Si hubo un error al insertar, redirigir de vuelta a la página de registro con un mensaje de error
+                response.sendRedirect("./registrarusuario.jsp?error=Error al introducir usuario");
+            }
+        } else {
+            // Si hubo un error al conectar con la base de datos, redirigir de vuelta a la página de registro con un mensaje de error
+            response.sendRedirect("./registrarusuario.jsp?error=Error al conectar con la base de datos");
+        }
+    }
 
     protected void buscarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         String usuario = request.getParameter("usuario");
         String clave = request.getParameter("clave");
 
@@ -174,7 +208,7 @@ public class UsuarioServlet extends HttpServlet {
         ConectorBD bd = new ConectorBD();
 
         // Verificar si el usuario existe
-        boolean usuarioExiste = bd.existeUsuario(usuario, clave);
+        boolean usuarioExiste = bd.existeUsuario(usuario, code.encode(clave));
 
         if (usuarioExiste) {
             // Si el usuario se encontró, cargar la página de médicos
