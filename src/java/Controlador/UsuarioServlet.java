@@ -5,9 +5,11 @@
  */
 package Controlador;
 
+import Modelo.Medico;
 import Modelo.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -109,11 +111,37 @@ public class UsuarioServlet extends HttpServlet {
             request.getRequestDispatcher("./registrarusuario.jsp").forward(request, response);
         }
     }
-    
+
+    /*
     private void cargarPaginaMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
         if (bd.conectar()) {
             
+            request.getRequestDispatcher("./medicos.jsp").forward(request, response);
+        }
+    }
+     */
+    private void cargarPaginaMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        bd = new ConectorBD();
+        if (bd.conectar()) {
+            List<Medico> medicos = bd.listar();
+
+            // Calcula la suma de todas las tarifas
+            float totalTarifas = 0;
+            for (Medico medico : medicos) {
+                totalTarifas += medico.getTarifa();
+            }
+
+            // Guarda la suma de todas las tarifas en un atributo de la solicitud
+            request.setAttribute("totalTarifas", totalTarifas);
+
+            // Guarda el tamaño de la lista de médicos en un atributo de la solicitud
+            request.setAttribute("cantidadMedicos", medicos.size());
+
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            request.setAttribute("medicos", medicos);
+
             request.getRequestDispatcher("./medicos.jsp").forward(request, response);
         }
     }
