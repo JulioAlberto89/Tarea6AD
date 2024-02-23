@@ -31,7 +31,7 @@ public class UsuarioServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Aquí puedes procesar la solicitud para el registro de usuarios
+        // Aquí procesas la solicitud para el registro de usuarios
         // Por ejemplo, puedes obtener los parámetros del formulario
         String nombre = request.getParameter("nombre");
         String email = request.getParameter("email");
@@ -39,8 +39,8 @@ public class UsuarioServlet extends HttpServlet {
 
         // Luego, puedes realizar cualquier validación necesaria de los datos del usuario
         // Por ejemplo, puedes verificar si el email ya está registrado en la base de datos
-        // Si todo está bien, puedes redirigir al usuario a otra página, por ejemplo, una página de inicio de sesión
-        response.sendRedirect("registrarusuario.jsp");
+        // Si todo está bien, redirige al usuario a la página de registro
+        response.sendRedirect("registrarusuario.jsp?from=index");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -56,7 +56,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">Registro</button>
                 </form>
-                <p class="text-center mt-3"><a href="./UsuarioServlet">Volver al inicio</a></p>
+                <p class="text-center mt-3"><a href="index.jsp">Volver al inicio</a></p>
             </div>
         </div>
 

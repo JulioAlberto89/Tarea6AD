@@ -6,6 +6,7 @@
 package Controlador;
 
 import Modelo.Medico;
+import Modelo.Usuario;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -80,10 +81,10 @@ public class ConectorBD {
     public boolean altaMedico(String nombre, Float sala, String especialidad, Integer tarifa) {
         boolean b = false;
         String query;
-        
+
         query = "INSERT INTO `medico` ( `nombre`,`sala`,`especialidad`,`tarifa`) VALUES "
                 + "( '" + nombre + "', '" + sala + "','" + especialidad + "','" + tarifa + "')";
-        
+
         try {
             System.out.println("Conexion: " + conn.getCatalog());
             stmt = conn.createStatement();
@@ -179,6 +180,50 @@ public class ConectorBD {
         }
 
         return listaMedicos;
+    }
+
+    ////////////////////////////////Usuario//////////////////////////////////
+    public boolean altaUsuario(String nombre, String usuario, String password) {
+        boolean b = false;
+        String query;
+
+        query = "INSERT INTO `usuario` ( `nombre`,`usuario`,`clave`) VALUES "
+                + "( '" + nombre + "', '" + usuario + "','" + password + "')";
+
+        try {
+            System.out.println("Conexion: " + conn.getCatalog());
+            stmt = conn.createStatement();
+            stmt.executeUpdate(query);
+            b = true;
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return b;
+    }
+
+    public Usuario buscarUsuario(String id) {
+        Usuario usuario = null;
+
+        try {
+            Statement orden = conn.createStatement();
+            ResultSet query = orden.executeQuery("select * from usuario where IDUSUARIO = '" + id + "'");
+
+            if (query.next()) {
+                usuario = new Usuario();
+
+                usuario.setIdusuario(Integer.parseInt(query.getString("IDUSUARIO")));
+                usuario.setNombre(query.getString("nombre"));
+                usuario.setUsuario(query.getString("usuario"));
+                usuario.setClave(query.getString("clave"));
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return usuario;
     }
 
 }
