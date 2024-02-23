@@ -89,25 +89,6 @@ public class UsuarioServlet extends HttpServlet {
     private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
         if (bd.conectar()) {
-            /*
-            List<Medico> medicos = bd.listar();
-
-            // Calcula la suma de todas las tarifas
-            float totalTarifas = 0;
-            for (Medico medico : medicos) {
-                totalTarifas += medico.getTarifa();
-            }
-
-            // Guarda la suma de todas las tarifas en un atributo de la solicitud
-            request.setAttribute("totalTarifas", totalTarifas);
-
-            // Guarda el tamaño de la lista de médicos en un atributo de la solicitud
-            request.setAttribute("cantidadMedicos", medicos.size());
-
-            request.setCharacterEncoding("UTF-8");
-            response.setCharacterEncoding("UTF-8");
-            request.setAttribute("medicos", medicos);
-             */
 
             request.getRequestDispatcher("./registrarusuario.jsp").forward(request, response);
         }
@@ -147,25 +128,6 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
-    /*
-    protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        //String id = request.getParameter("id");
-        String nombre = request.getParameter("nombre");
-        String usuario = request.getParameter("usuario");
-        String clave = request.getParameter("clave");
-        if (bd.conectar()) {
-            if (bd.altaUsuario(nombre, usuario, clave)) {
-                this.cargarPagina(request, response);
-            } else {
-                System.out.println("Error al introducir usuario");
-            }
-        } else {
-            System.out.println("No entro");
-        }
-    }
-     */
     protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

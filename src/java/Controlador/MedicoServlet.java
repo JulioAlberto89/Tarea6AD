@@ -101,31 +101,31 @@ public class MedicoServlet extends HttpServlet {
             request.getRequestDispatcher("./medicos.jsp").forward(request, response);
         }
     }
-    */
+     */
     private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    bd = new ConectorBD();
-    if (bd.conectar()) {
-        List<Medico> medicos = bd.listar();
-        
-        // Calcula la suma de todas las tarifas
-        float totalTarifas = 0;
-        for (Medico medico : medicos) {
-            totalTarifas += medico.getTarifa();
+        bd = new ConectorBD();
+        if (bd.conectar()) {
+            List<Medico> medicos = bd.listar();
+
+            // Calcula la suma de todas las tarifas
+            float totalTarifas = 0;
+            for (Medico medico : medicos) {
+                totalTarifas += medico.getTarifa();
+            }
+
+            // Guarda la suma de todas las tarifas en un atributo de la solicitud
+            request.setAttribute("totalTarifas", totalTarifas);
+
+            // Guarda el tamaño de la lista de médicos en un atributo de la solicitud
+            request.setAttribute("cantidadMedicos", medicos.size());
+
+            request.setCharacterEncoding("UTF-8");
+            response.setCharacterEncoding("UTF-8");
+            request.setAttribute("medicos", medicos);
+
+            request.getRequestDispatcher("./medicos.jsp").forward(request, response);
         }
-
-        // Guarda la suma de todas las tarifas en un atributo de la solicitud
-        request.setAttribute("totalTarifas", totalTarifas);
-
-        // Guarda el tamaño de la lista de médicos en un atributo de la solicitud
-        request.setAttribute("cantidadMedicos", medicos.size());
-
-        request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
-        request.setAttribute("medicos", medicos);
-
-        request.getRequestDispatcher("./medicos.jsp").forward(request, response);
     }
-}
 
     /**
      * Handles the HTTP <code>POST</code> method.
@@ -220,6 +220,7 @@ public class MedicoServlet extends HttpServlet {
         this.cargarPagina(request, response);
     }
 
+    /*
     protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -237,6 +238,73 @@ public class MedicoServlet extends HttpServlet {
         } else {
             System.out.println("No entro");
         }
+    }
+     */
+ /*
+    protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String nombre = request.getParameter("nombre");
+        String sala = request.getParameter("sala");
+        String especialidad = request.getParameter("especialidad");
+        String tarifa = request.getParameter("tarifa");
+
+        try {
+            float salaFloat = Float.parseFloat(sala);
+            int tarifaInt = Integer.parseInt(tarifa);
+
+            if (bd.conectar()) {
+                if (bd.altaMedico(nombre, salaFloat, especialidad, tarifaInt)) {
+                    // Si se insertó correctamente, redirigir a la página de médicos
+                    response.sendRedirect("./medicos.jsp");
+                } else {
+                    // Si hubo un error al insertar, redirigir a la página con un mensaje de error
+                    response.sendRedirect("./medicos.jsp?error=Error al introducir médico");
+                }
+            }
+        } catch (NumberFormatException e) {
+            // Si se produce una excepción, significa que se ingresó una letra en los campos de "sala" o "tarifa"
+            // Redirigir a la página con un mensaje de error
+            response.sendRedirect(request.getContextPath() + "/medicos.jsp?error=Ingrese valores numéricos válidos para la sala y la tarifa");
+        }
+    }
+     */
+    protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String nombre = request.getParameter("nombre");
+        String salaStr = request.getParameter("sala");
+        String especialidad = request.getParameter("especialidad");
+        String tarifaStr = request.getParameter("tarifa");
+
+        if (nombre != null && !nombre.isEmpty()
+                && salaStr != null && !salaStr.isEmpty()
+                && especialidad != null && !especialidad.isEmpty()
+                && tarifaStr != null && !tarifaStr.isEmpty()) {
+
+            try {
+                float sala = Float.parseFloat(salaStr);
+                int tarifa = Integer.parseInt(tarifaStr);
+
+                if (sala > 0 && tarifa > 0) {
+                    if (bd.conectar() && bd.altaMedico(nombre, sala, especialidad, tarifa)) {
+                        // Redirigir a la página de médicos después de la inserción exitosa
+                        cargarPagina(request, response);
+                        return;
+                    }
+                }
+            } catch (NumberFormatException e) {
+                // Setear un atributo en la solicitud para indicar el error
+                request.setAttribute("error", "Los valores de sala o tarifa no son numéricos.");
+            }
+        } else {
+            // Setear un atributo en la solicitud para indicar el error
+            request.setAttribute("error", "Todos los campos son requeridos.");
+        }
+
+        // Si llega aquí, la inserción falló o los datos ingresados son incorrectos
+        // Volver a cargar la página actual
+        cargarPagina(request, response);
     }
 
     /**
