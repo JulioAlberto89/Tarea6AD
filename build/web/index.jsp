@@ -29,6 +29,23 @@
                 border-radius: 10px;
                 box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
             }
+            .center-box {
+                background-color: #ffffff;
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+            }
+
+            .doctor-image {
+                max-width: 100%;
+                height: auto;
+                border-radius: 10px;
+            }
+
+            .center-box .col-md-6 {
+                padding: 0; /* Eliminar el relleno predeterminado de las columnas */
+            }
+
         </style>
     </style>    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -37,22 +54,30 @@
 <body>
 
     <div class="container">
-        <div class="center-box col-md-6">
-            <h2 class="text-center">Gestión Médicos</h2>
-            <form action="./UsuarioServlet?accion=buscar" method="GET">
-                <div class="form-group">
-                    <label for="usuario">Email:</label>
-                    <input type="usuario" class="form-control" id="usuario" name="usuario" required>
+        <div class="center-box">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="https://img.freepik.com/vector-premium/caracter-doctor-ilustracion-vectorial-estilo-plano_605517-147.jpg" class="doctor-image" alt="Doctor">
                 </div>
-                <div class="form-group">
-                    <label for="clave">Contraseña:</label>
-                    <input type="clave" class="form-control" id="clave" name="clave" required>
+                <div class="col-md-6" style="padding-right: 20px;">
+                    <form action="./UsuarioServlet?accion=buscar" method="GET">
+                        <h2 class="text-center">Gestión Médicos</h2>
+                        <div class="form-group">
+                            <label for="usuario">Email:</label>
+                            <input type="usuario" class="form-control" id="usuario" name="usuario" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="clave">Contraseña:</label>
+                            <input type="clave" class="form-control" id="clave" name="clave" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" name="accion" value="buscar">Iniciar Sesión</button>
+                    </form>
+                    <p class="text-center mt-3">¿Aún no tienes cuenta? <a href="./UsuarioServlet">Regístrate aquí</a></p>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block" name="accion" value="buscar">Iniciar Sesión</button>
-            </form>
-            <p class="text-center mt-3">¿Aún no tienes cuenta? <a href="./UsuarioServlet">Regístrate aquí</a></p>
-
+            </div>
+            <!--
             <p class="text-center mt-3"><a href="./MedicoServlet">Entrar como invitado</a></p>
+            -->
         </div>
     </div>
 
