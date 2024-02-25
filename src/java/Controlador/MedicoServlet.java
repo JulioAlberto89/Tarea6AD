@@ -384,7 +384,6 @@ public class MedicoServlet extends HttpServlet {
         }
     }
      */
-
     protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 

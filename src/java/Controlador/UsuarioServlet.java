@@ -101,15 +101,15 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
-    /*
-    private void cargarPaginaMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    
+    private void cargarIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
         if (bd.conectar()) {
             
-            request.getRequestDispatcher("./medicos.jsp").forward(request, response);
+            request.getRequestDispatcher("./index.jsp").forward(request, response);
         }
     }
-     */
+    
     private void cargarPaginaMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
         if (bd.conectar())
@@ -194,7 +194,8 @@ public class UsuarioServlet extends HttpServlet {
             if (bd.altaUsuario(nombre, usuario, code.encode(clave)))
             {
                 // Si se insertó correctamente, cargar la página de médicos
-                this.cargarPaginaMedicos(request, response);
+                //this.cargarPaginaMedicos(request, response);
+                this.cargarIndex(request, response);
             } else
             {
                 // Si hubo un error al insertar, redirigir de vuelta a la página de registro con un mensaje de error

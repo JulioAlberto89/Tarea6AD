@@ -31,6 +31,8 @@
             }
         </style>
     </style>    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Verifica si hay un parámetro de error en la URL y muestra un SweetAlert si es así -->
 </head>
 <body>
 
@@ -53,8 +55,7 @@
             <p class="text-center mt-3"><a href="./MedicoServlet">Entrar como invitado</a></p>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Verifica si hay un parámetro de error en la URL y muestra un SweetAlert si es así -->
+    
     <%
         String error = request.getParameter("error");
         if (error != null && !error.isEmpty()) {
