@@ -195,6 +195,7 @@ public class UsuarioServlet extends HttpServlet {
             {
                 // Si se insertó correctamente, cargar la página de médicos
                 //this.cargarPaginaMedicos(request, response);
+                request.getSession().setAttribute("successMessage", "El usuario ha sido registrado exitosamente");
                 this.cargarIndex(request, response);
             } else
             {

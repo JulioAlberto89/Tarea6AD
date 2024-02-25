@@ -61,10 +61,11 @@
                 <p class="text-center mt-3"><a href="index.jsp">Volver al inicio</a></p>
             </div>
         </div>
-        
+
         <%
             String error = request.getParameter("error");
-            if (error != null && !error.isEmpty()) {
+            if (error != null && !error.isEmpty())
+            {
         %>
         <script>
             Swal.fire({
@@ -76,6 +77,8 @@
         <%
             }
         %>
+
+
 
     </body>
 </html>

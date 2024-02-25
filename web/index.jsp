@@ -55,10 +55,11 @@
             <p class="text-center mt-3"><a href="./MedicoServlet">Entrar como invitado</a></p>
         </div>
     </div>
-    
+
     <%
         String error = request.getParameter("error");
-        if (error != null && !error.isEmpty()) {
+        if (error != null && !error.isEmpty())
+        {
     %>
     <script>
         Swal.fire({
@@ -68,6 +69,24 @@
         });
     </script>
     <%
+        }
+    %>
+
+    <%
+        String successMessage = (String) request.getSession().getAttribute("successMessage");
+        if (successMessage != null && !successMessage.isEmpty())
+        {
+    %>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Registro exitoso!',
+            text: '<%= successMessage%>'
+        });
+    </script>
+    <%
+            // Limpiar el mensaje de éxito después de mostrar la alerta
+            request.getSession().removeAttribute("successMessage");
         }
     %>
 </body>
