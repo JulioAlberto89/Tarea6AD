@@ -357,7 +357,7 @@ public class MedicoServlet extends HttpServlet {
             if (bd.eliminarMedico(Integer.parseInt(id)))
             {
                 request.getSession().setAttribute("successMessageEliminado", "Médico borrado exitosamente");
-                        
+
                 this.cargarPagina(request, response);
             }
         }

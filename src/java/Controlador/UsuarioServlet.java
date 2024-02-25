@@ -71,6 +71,11 @@ public class UsuarioServlet extends HttpServlet {
 
         String accion = request.getParameter("accion");
 
+        // Obtener el nombre de usuario
+        String nombreUsuario = nombreUsuario(request, response);
+        // Guardar el nombre del usuario como un atributo de la solicitud
+        request.setAttribute("nombreUsuario", nombreUsuario);
+
         if (accion != null)
         {
             switch (accion)
@@ -101,15 +106,15 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
-    
     private void cargarIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
-        if (bd.conectar()) {
-            
+        if (bd.conectar())
+        {
+
             request.getRequestDispatcher("./index.jsp").forward(request, response);
         }
     }
-    
+
     private void cargarPaginaMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
         if (bd.conectar())
@@ -134,6 +139,19 @@ public class UsuarioServlet extends HttpServlet {
             request.setAttribute("medicos", medicos);
 
             request.getRequestDispatcher("./medicos.jsp").forward(request, response);
+        }
+    }
+
+    private void cargarPaginaMenu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        bd = new ConectorBD();
+        if (bd.conectar())
+        {
+            // Aquí podrías incluir la lógica específica para cargar la página de menú
+            // Por ejemplo, si necesitas cargar datos específicos para la página de menú
+            // Puedes realizar esas operaciones aquí
+
+            // Luego, redirige a menu.jsp
+            request.getRequestDispatcher("/menu.jsp").forward(request, response);
         }
     }
 
@@ -224,12 +242,29 @@ public class UsuarioServlet extends HttpServlet {
         if (usuarioExiste)
         {
             // Si el usuario se encontró, cargar la página de médicos
-            this.cargarPaginaMedicos(request, response);
+            //this.cargarPaginaMedicos(request, response);
+            this.cargarPaginaMenu(request, response);
         } else
         {
             // Si no se encontró el usuario, redirigir de vuelta a la página de inicio de sesión con un mensaje de error
             response.sendRedirect("./index.jsp?error=Usuario o contraseña incorrectos");
         }
+    }
+
+    protected String nombreUsuario(HttpServletRequest request, HttpServletResponse response) {
+        String nombreUsuario = request.getParameter("usuario");
+        String clave = request.getParameter("clave");
+
+        // Inicializar bd
+        bd = new ConectorBD();
+
+        // Verificar si el usuario existe
+        String nombre = null;
+        if (bd.conectar())
+        {
+            nombre = bd.buscarNombreUsuario(nombreUsuario, clave);
+        }
+        return nombre;
     }
 
     /**

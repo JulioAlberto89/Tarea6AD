@@ -75,9 +75,9 @@
                     <p class="text-center mt-3">¿Aún no tienes cuenta? <a href="./UsuarioServlet">Regístrate aquí</a></p>
                 </div>
             </div>
-            <!--
-            <p class="text-center mt-3"><a href="./MedicoServlet">Entrar como invitado</a></p>
-            -->
+            
+            <p class="text-center mt-3"><a href="menu.jsp">Entrar al menú</a></p>
+            
         </div>
     </div>
 

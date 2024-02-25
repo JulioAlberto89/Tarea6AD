@@ -42,20 +42,24 @@ public class ConectorBD {
     public boolean conectar() {
         boolean b = false;
 
-        try {
+        try
+        {
             //Obtenemos el driver de mysql
             Class.forName(driver);
             //Establecemos conexión
             conn = DriverManager.getConnection(url + bd, login, password);
 
-            if (conn != null) {
+            if (conn != null)
+            {
                 System.out.println("Conexión a " + bd + " establecida correctamente.");
                 b = true;
             }
 
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -64,14 +68,17 @@ public class ConectorBD {
 
     public boolean close() {
         boolean b = false;
-        if (this.conn != null) {
-            try {
+        if (this.conn != null)
+        {
+            try
+            {
                 conn.close();
                 conn = null;
                 b = true;
 
                 System.out.println("La conexión a la base de datos " + bd + " se ha terminado.");
-            } catch (SQLException ex) {
+            } catch (SQLException ex)
+            {
                 Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
@@ -85,12 +92,14 @@ public class ConectorBD {
         query = "INSERT INTO `medico` ( `nombre`,`sala`,`especialidad`,`tarifa`) VALUES "
                 + "( '" + nombre + "', '" + sala + "','" + especialidad + "','" + tarifa + "')";
 
-        try {
+        try
+        {
             System.out.println("Conexion: " + conn.getCatalog());
             stmt = conn.createStatement();
             stmt.executeUpdate(query);
             b = true;
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
@@ -101,11 +110,13 @@ public class ConectorBD {
     public Medico buscarMedico(String id) {
         Medico medico = null;
 
-        try {
+        try
+        {
             Statement orden = conn.createStatement();
             ResultSet query = orden.executeQuery("select * from medico where id_medico = '" + id + "'");
 
-            if (query.next()) {
+            if (query.next())
+            {
                 medico = new Medico();
 
                 medico.setIdMedico(Integer.parseInt(query.getString("id_medico")));
@@ -115,7 +126,8 @@ public class ConectorBD {
                 medico.setTarifa(Integer.parseInt(query.getString("tarifa")));
 
             }
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -129,12 +141,14 @@ public class ConectorBD {
         query = "UPDATE medico SET nombre ='" + nombre + "',sala='" + sala + "',especialidad='" + especialidad + "',tarifa='" + tarifa
                 + "' WHERE id_medico ='" + id + "'";
 
-        try {
+        try
+        {
             System.out.println("Conexion: " + conn.getCatalog());
             stmt = conn.createStatement();
             stmt.executeUpdate(query);
             b = true;
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
@@ -146,12 +160,14 @@ public class ConectorBD {
 
         boolean b = false;
 
-        try {
+        try
+        {
             Statement orden = conn.createStatement();
             orden.executeUpdate("delete from medico where id_medico = '" + id + "'");
             orden.close();
             b = true;
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -161,11 +177,13 @@ public class ConectorBD {
     public ArrayList<Medico> listar() {
         ArrayList<Medico> listaMedicos = new ArrayList<>();
 
-        try {
+        try
+        {
             Statement orden = conn.createStatement();
             ResultSet query = orden.executeQuery("select * from medico");
 
-            while (query.next()) {
+            while (query.next())
+            {
                 Medico medico = new Medico();
                 medico.setIdMedico(query.getInt("id_medico"));
                 medico.setNombre(query.getString("nombre"));
@@ -175,7 +193,8 @@ public class ConectorBD {
 
                 listaMedicos.add(medico);
             }
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -190,12 +209,14 @@ public class ConectorBD {
         query = "INSERT INTO `usuario` ( `nombre`,`usuario`,`clave`) VALUES "
                 + "( '" + nombre + "', '" + usuario + "','" + password + "')";
 
-        try {
+        try
+        {
             System.out.println("Conexion: " + conn.getCatalog());
             stmt = conn.createStatement();
             stmt.executeUpdate(query);
             b = true;
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
@@ -207,23 +228,51 @@ public class ConectorBD {
         boolean usuarioExiste = false;
 
         conectar();
-        
-        try {
+
+        try
+        {
             PreparedStatement statement = conn.prepareStatement("SELECT COUNT(*) AS count FROM usuario WHERE usuario = ? AND clave = ?");
             statement.setString(1, nombreUsuario);
             statement.setString(2, clave);
 
             ResultSet query = statement.executeQuery();
 
-            if (query.next()) {
+            if (query.next())
+            {
                 int count = query.getInt("count");
                 usuarioExiste = count > 0;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException ex)
+        {
             Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         return usuarioExiste;
+    }
+
+    public String buscarNombreUsuario(String nombreUsuario, String clave) {
+        String nombre = null;
+
+        conectar();
+
+        try
+        {
+            PreparedStatement statement = conn.prepareStatement("SELECT nombre FROM usuario WHERE usuario = ? AND clave = ?");
+            statement.setString(1, nombreUsuario);
+            statement.setString(2, clave);
+
+            ResultSet query = statement.executeQuery();
+
+            if (query.next())
+            {
+                nombre = query.getString("nombre");
+            }
+        } catch (SQLException ex)
+        {
+            Logger.getLogger(ConectorBD.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return nombre;
     }
 
 }
