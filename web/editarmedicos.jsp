@@ -50,9 +50,23 @@
                         <button type="submit" class="btn btn-primary">Guardar cambios</button>
                     </form>
                 </section>
-                        
+
             </div>
         </div>
+
+        <script>
+            function validarFormulario() {
+                var sala = document.getElementById("sala").value;
+                var tarifa = document.getElementById("tarifa").value;
+
+                if (isNaN(sala) || isNaN(tarifa)) {
+                    alert("Por favor, ingrese un valor numérico para la sala y la tarifa.");
+                    return false; // Detiene el envío del formulario si alguno de los campos no es numérico
+                }
+                return true; // Permite el envío del formulario si ambos campos son numéricos
+            }
+        </script>
+        
 
     </body>
 </html>

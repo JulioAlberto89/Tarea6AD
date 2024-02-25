@@ -19,7 +19,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Usuario
  */
-@WebServlet(name = "MedicoServlet", urlPatterns = {"/MedicoServlet"})
+@WebServlet(name = "MedicoServlet", urlPatterns =
+{
+    "/MedicoServlet"
+})
 public class MedicoServlet extends HttpServlet {
 
     ConectorBD bd;
@@ -36,7 +39,8 @@ public class MedicoServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        try ( PrintWriter out = response.getWriter())
+        {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
@@ -69,8 +73,10 @@ public class MedicoServlet extends HttpServlet {
 
         String accion = request.getParameter("accion");
 
-        if (accion != null) {
-            switch (accion) {
+        if (accion != null)
+        {
+            switch (accion)
+            {
                 case "editar":
                     this.editarMedico(request, response);
                     break;
@@ -83,7 +89,8 @@ public class MedicoServlet extends HttpServlet {
                 default:
                     this.cargarPagina(request, response);
             }
-        } else {
+        } else
+        {
             this.cargarPagina(request, response);
         }
     }
@@ -104,12 +111,14 @@ public class MedicoServlet extends HttpServlet {
      */
     private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
-        if (bd.conectar()) {
+        if (bd.conectar())
+        {
             List<Medico> medicos = bd.listar();
 
             // Calcula la suma de todas las tarifas
             float totalTarifas = 0;
-            for (Medico medico : medicos) {
+            for (Medico medico : medicos)
+            {
                 totalTarifas += medico.getTarifa();
             }
 
@@ -124,6 +133,15 @@ public class MedicoServlet extends HttpServlet {
             request.setAttribute("medicos", medicos);
 
             request.getRequestDispatcher("./medicos.jsp").forward(request, response);
+        }
+    }
+
+    private void cargarPaginaEditar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        bd = new ConectorBD();
+        if (bd.conectar())
+        {
+
+            request.getRequestDispatcher("./editarmedicos.jsp").forward(request, response);
         }
     }
 
@@ -143,8 +161,10 @@ public class MedicoServlet extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         bd = new ConectorBD();
         String accion = request.getParameter("accion");
-        if (accion != null) {
-            switch (accion) {
+        if (accion != null)
+        {
+            switch (accion)
+            {
                 case "insertar":
                     this.insertarMedico(request, response);
                     break;
@@ -160,11 +180,13 @@ public class MedicoServlet extends HttpServlet {
                 default:
                     this.cargarPagina(request, response);
             }
-        } else {
+        } else
+        {
             this.cargarPagina(request, response);
         }
     }
 
+    /*
     protected void modificarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -191,7 +213,53 @@ public class MedicoServlet extends HttpServlet {
         }
         this.cargarPagina(request, response);
     }
+     */
+    protected void modificarMedico(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+        String id = request.getParameter("id");
+        String nombre = request.getParameter("nombre");
+        String salaStr = request.getParameter("sala");
+        String especialidad = request.getParameter("especialidad");
+        String tarifaStr = request.getParameter("tarifa");
+
+        if (id != null && !id.isEmpty() && nombre != null && !nombre.isEmpty()
+                && salaStr != null && !salaStr.isEmpty() && especialidad != null && !especialidad.isEmpty()
+                && tarifaStr != null && !tarifaStr.isEmpty())
+        {
+
+            try
+            {
+                float sala = Float.parseFloat(salaStr);
+                int tarifa = Integer.parseInt(tarifaStr);
+
+                if (sala > 0 && tarifa > 0)
+                {
+                    if (bd.conectar() && bd.actMedico(Integer.parseInt(id), nombre, sala, especialidad, tarifa))
+                    {
+                        // Redirigir a la página de médicos después de la modificación exitosa
+                        cargarPagina(request, response);
+                        return;
+                    }
+                }
+            } catch (NumberFormatException e)
+            {
+                // Setear un atributo en la solicitud para indicar el error
+                request.setAttribute("error", "Los valores de sala o tarifa no son numéricos.");
+            }
+        } else
+        {
+            // Setear un atributo en la solicitud para indicar el error
+            request.setAttribute("error", "Todos los campos son requeridos.");
+        }
+
+        // Si llega aquí, la modificación falló o los datos ingresados son incorrectos
+        // Volver a cargar la página actual
+        cargarPagina(request, response);
+    }
+
+
+    /*
     protected void editarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -206,69 +274,117 @@ public class MedicoServlet extends HttpServlet {
         request.getRequestDispatcher(jspEditar).forward(request, response);
         return;
     }
+     */
+ /*
+    protected void editarMedico(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
+        String id = request.getParameter("id");
+        Medico medico = new Medico();
+        if (bd.conectar())
+        {
+            medico = bd.buscarMedico(id);
+            if (medico != null)
+            {
+                request.setAttribute("amod", medico);
+            } else
+            {
+                // Manejar el caso donde medico no se encontró
+                // Por ejemplo, redirigir a una página de error
+                response.sendRedirect("error.jsp");
+                return;
+            }
+        } else
+        {
+            // Manejar el caso donde la conexión a la base de datos falló
+            // Por ejemplo, redirigir a una página de error
+            response.sendRedirect("error.jsp");
+            return;
+        }
+
+        String jspEditar = "./editarmedicos.jsp";
+        request.getRequestDispatcher(jspEditar).forward(request, response);
+    }
+     */
+    protected void editarMedico(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String id = request.getParameter("id");
+        Medico medico = new Medico();
+        try
+        {
+            bd = new ConectorBD();
+            if (bd.conectar())
+            {
+                medico = bd.buscarMedico(id);
+                if (medico != null)
+                {
+                    request.setAttribute("amod", medico);
+                } else
+                {
+                    // Manejar el caso donde medico no se encontró
+                    // Por ejemplo, redirigir a una página de error
+                    response.sendRedirect("error.jsp");
+                    return;
+                }
+            } else
+            {
+                // Manejar el caso donde la conexión a la base de datos falló
+                // Por ejemplo, redirigir a una página de error
+                response.sendRedirect("error.jsp");
+                return;
+            }
+        } catch (Exception e)
+        {
+            // Manejar el caso de cualquier excepción durante la conexión a la base de datos
+            // Por ejemplo, redirigir a una página de error
+            response.sendRedirect("error.jsp");
+            return;
+        }
+
+        String jspEditar = "./editarmedicos.jsp";
+        request.getRequestDispatcher(jspEditar).forward(request, response);
+    }
+
+    
     protected void eliminarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("Método eliminar médico");
         System.out.println("Id médico: " + request.getParameter("id"));
         String id = request.getParameter("id");
-        if (bd.conectar()) {
-            if (bd.eliminarMedico(Integer.parseInt(id))) {
+        if (bd.conectar())
+        {
+            if (bd.eliminarMedico(Integer.parseInt(id)))
+            {
                 this.cargarPagina(request, response);
             }
         }
         this.cargarPagina(request, response);
     }
-
     /*
-    protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
+    protected void eliminarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("Método eliminar médico");
+        System.out.println("Id médico: " + request.getParameter("id"));
+        String id = request.getParameter("id");
 
-        //String id = request.getParameter("id");
-        String nombre = request.getParameter("nombre");
-        String sala = request.getParameter("sala");
-        String especialidad = request.getParameter("especialidad");
-        String tarifa = request.getParameter("tarifa");
-        if (bd.conectar()) {
-            if (bd.altaMedico(nombre, Float.parseFloat(sala), especialidad, Integer.parseInt(tarifa))) {
+        // Verificar si bd es nulo antes de usarlo
+        if (bd != null && bd.conectar())
+        {
+            if (bd.eliminarMedico(Integer.parseInt(id)))
+            {
                 this.cargarPagina(request, response);
-            } else {
-                System.out.println("Error al introducir medico");
+                return; // Salir del método después de cargar la página
             }
-        } else {
-            System.out.println("No entro");
+        } else
+        {
+            // Manejar el caso donde bd es null o la conexión falla
+            // Aquí puedes imprimir un mensaje de error o realizar alguna acción adecuada
+            System.out.println("Error: bd es null o la conexión falló");
         }
     }
-     */
- /*
-    protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    */
 
-        String nombre = request.getParameter("nombre");
-        String sala = request.getParameter("sala");
-        String especialidad = request.getParameter("especialidad");
-        String tarifa = request.getParameter("tarifa");
-
-        try {
-            float salaFloat = Float.parseFloat(sala);
-            int tarifaInt = Integer.parseInt(tarifa);
-
-            if (bd.conectar()) {
-                if (bd.altaMedico(nombre, salaFloat, especialidad, tarifaInt)) {
-                    // Si se insertó correctamente, redirigir a la página de médicos
-                    response.sendRedirect("./medicos.jsp");
-                } else {
-                    // Si hubo un error al insertar, redirigir a la página con un mensaje de error
-                    response.sendRedirect("./medicos.jsp?error=Error al introducir médico");
-                }
-            }
-        } catch (NumberFormatException e) {
-            // Si se produce una excepción, significa que se ingresó una letra en los campos de "sala" o "tarifa"
-            // Redirigir a la página con un mensaje de error
-            response.sendRedirect(request.getContextPath() + "/medicos.jsp?error=Ingrese valores numéricos válidos para la sala y la tarifa");
-        }
-    }
-     */
     protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -280,24 +396,32 @@ public class MedicoServlet extends HttpServlet {
         if (nombre != null && !nombre.isEmpty()
                 && salaStr != null && !salaStr.isEmpty()
                 && especialidad != null && !especialidad.isEmpty()
-                && tarifaStr != null && !tarifaStr.isEmpty()) {
+                && tarifaStr != null && !tarifaStr.isEmpty())
+        {
 
-            try {
+            try
+            {
                 float sala = Float.parseFloat(salaStr);
                 int tarifa = Integer.parseInt(tarifaStr);
 
-                if (sala > 0 && tarifa > 0) {
-                    if (bd.conectar() && bd.altaMedico(nombre, sala, especialidad, tarifa)) {
+                if (sala > 0 && tarifa > 0)
+                {
+                    if (bd.conectar() && bd.altaMedico(nombre, sala, especialidad, tarifa))
+                    {
                         // Redirigir a la página de médicos después de la inserción exitosa
+                        //cargarPagina(request, response);
+                        //request.getSession().setAttribute("successMessage", "insert");
                         cargarPagina(request, response);
                         return;
                     }
                 }
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException e)
+            {
                 // Setear un atributo en la solicitud para indicar el error
                 request.setAttribute("error", "Los valores de sala o tarifa no son numéricos.");
             }
-        } else {
+        } else
+        {
             // Setear un atributo en la solicitud para indicar el error
             request.setAttribute("error", "Todos los campos son requeridos.");
         }

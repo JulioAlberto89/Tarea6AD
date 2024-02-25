@@ -94,8 +94,28 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Verifica si hay un parámetro de error en la URL y muestra un SweetAlert si es así -->
     <%
+        String successMessage = (String) request.getSession().getAttribute("successMessage");
+        if (successMessage != null && successMessage.equals("insert"))
+        {
+    %>
+    <script>
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "El médico ha sido insertado exitosamente",
+            showConfirmButton: false,
+            timer: 1500
+        });
+    </script>
+    <%
+            // Eliminar el mensaje de éxito de la sesión después de mostrarlo
+            request.getSession().removeAttribute("successMessage");
+        }
+    %>
+    <%
         String error = request.getParameter("error");
-        if (error != null && !error.isEmpty()) {
+        if (error != null && !error.isEmpty())
+        {
     %>
     <script>
         Swal.fire({
