@@ -237,6 +237,7 @@ public class MedicoServlet extends HttpServlet {
                 {
                     if (bd.conectar() && bd.actMedico(Integer.parseInt(id), nombre, sala, especialidad, tarifa))
                     {
+                        request.getSession().setAttribute("successMessage", "Médico modificado exitosamente");
                         // Redirigir a la página de médicos después de la modificación exitosa
                         cargarPagina(request, response);
                         return;
@@ -355,6 +356,8 @@ public class MedicoServlet extends HttpServlet {
         {
             if (bd.eliminarMedico(Integer.parseInt(id)))
             {
+                request.getSession().setAttribute("successMessageEliminado", "Médico borrado exitosamente");
+                        
                 this.cargarPagina(request, response);
             }
         }
@@ -410,6 +413,7 @@ public class MedicoServlet extends HttpServlet {
                         // Redirigir a la página de médicos después de la inserción exitosa
                         //cargarPagina(request, response);
                         //request.getSession().setAttribute("successMessage", "insert");
+                        request.getSession().setAttribute("successMessageInsertado", "Médico insertado exitosamente");
                         cargarPagina(request, response);
                         return;
                     }

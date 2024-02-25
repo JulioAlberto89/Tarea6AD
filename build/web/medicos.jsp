@@ -96,25 +96,7 @@
     </div>
 
 
-    <%
-        String successMessage = (String) request.getSession().getAttribute("successMessage");
-        if (successMessage != null && successMessage.equals("insert"))
-        {
-    %>
-    <script>
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "El médico ha sido insertado exitosamente",
-            showConfirmButton: false,
-            timer: 1500
-        });
-    </script>
-    <%
-            // Eliminar el mensaje de éxito de la sesión después de mostrarlo
-            request.getSession().removeAttribute("successMessage");
-        }
-    %>
+
     <%
         String error = request.getParameter("error");
         if (error != null && !error.isEmpty())
@@ -128,6 +110,60 @@
         });
     </script>
     <%
+        }
+    %>
+
+    <%
+        String successMessage = (String) request.getSession().getAttribute("successMessage");
+        if (successMessage != null && !successMessage.isEmpty())
+        {
+    %>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Modificación exitosa!',
+            text: '<%= successMessage%>'
+        });
+    </script>
+    <%
+            // Limpiar el mensaje de éxito después de mostrar la alerta
+            request.getSession().removeAttribute("successMessage");
+        }
+    %>
+    <!-- Mensaje de borrado -->
+    <%
+        String successMessageBorrar = (String) request.getSession().getAttribute("successMessageEliminado");
+        if (successMessageBorrar != null && !successMessageBorrar.isEmpty())
+        {
+    %>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Borrado exitoso!',
+            text: '<%= successMessageBorrar%>'
+        });
+    </script>
+    <%
+            // Limpiar el mensaje de éxito después de mostrar la alerta
+            request.getSession().removeAttribute("successMessageEliminado");
+        }
+    %>
+    <!--Insertar médico-->
+    <%
+        String successMessageInsertado = (String) request.getSession().getAttribute("successMessageInsertado");
+        if (successMessageInsertado != null && !successMessageInsertado.isEmpty())
+        {
+    %>
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: '¡Inserción exitosa!',
+            text: '<%= successMessageInsertado%>'
+        });
+    </script>
+    <%
+            // Limpiar el mensaje de éxito después de mostrar la alerta
+            request.getSession().removeAttribute("successMessageInsertado");
         }
     %>
 </body>
