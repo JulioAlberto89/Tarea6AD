@@ -20,7 +20,10 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Usuario
  */
-@WebServlet(name = "UsuarioServlet", urlPatterns = {"/UsuarioServlet"})
+@WebServlet(name = "UsuarioServlet", urlPatterns =
+{
+    "/UsuarioServlet"
+})
 public class UsuarioServlet extends HttpServlet {
 
     ConectorBD bd;
@@ -68,8 +71,10 @@ public class UsuarioServlet extends HttpServlet {
 
         String accion = request.getParameter("accion");
 
-        if (accion != null) {
-            switch (accion) {
+        if (accion != null)
+        {
+            switch (accion)
+            {
                 case "registrar":
                     this.insertarUsuario(request, response);
                     break;
@@ -81,14 +86,16 @@ public class UsuarioServlet extends HttpServlet {
                 default:
                     this.cargarPagina(request, response);
             }
-        } else {
+        } else
+        {
             this.cargarPagina(request, response);
         }
     }
 
     private void cargarPagina(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
-        if (bd.conectar()) {
+        if (bd.conectar())
+        {
 
             request.getRequestDispatcher("./registrarusuario.jsp").forward(request, response);
         }
@@ -105,12 +112,14 @@ public class UsuarioServlet extends HttpServlet {
      */
     private void cargarPaginaMedicos(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         bd = new ConectorBD();
-        if (bd.conectar()) {
+        if (bd.conectar())
+        {
             List<Medico> medicos = bd.listar();
 
             // Calcula la suma de todas las tarifas
             float totalTarifas = 0;
-            for (Medico medico : medicos) {
+            for (Medico medico : medicos)
+            {
                 totalTarifas += medico.getTarifa();
             }
 
@@ -128,6 +137,7 @@ public class UsuarioServlet extends HttpServlet {
         }
     }
 
+    /*
     protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -159,6 +169,43 @@ public class UsuarioServlet extends HttpServlet {
             response.sendRedirect("./registrarusuario.jsp?error=Error al conectar con la base de datos");
         }
     }
+     */
+    protected void insertarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String nombre = request.getParameter("nombre");
+        String usuario = request.getParameter("usuario");
+        String clave = request.getParameter("clave");
+        String confirmarClave = request.getParameter("confirmPassword");
+
+        // Verificar si las contraseñas coinciden
+        if (!clave.equals(confirmarClave))
+        {
+            // Si las contraseñas no coinciden, redirigir de vuelta a la página de registro con un mensaje de error
+            response.sendRedirect("./registrarusuario.jsp?error=Las contraseñas no coinciden");
+            return; // Terminar la ejecución del método después de redireccionar
+        }
+
+        // Crear una instancia de la clase ConectorBD
+        ConectorBD bd = new ConectorBD();
+
+        if (bd.conectar())
+        {
+            if (bd.altaUsuario(nombre, usuario, code.encode(clave)))
+            {
+                // Si se insertó correctamente, cargar la página de médicos
+                this.cargarPaginaMedicos(request, response);
+            } else
+            {
+                // Si hubo un error al insertar, redirigir de vuelta a la página de registro con un mensaje de error
+                response.sendRedirect("./registrarusuario.jsp?error=Error al introducir usuario");
+            }
+        } else
+        {
+            // Si hubo un error al conectar con la base de datos, redirigir de vuelta a la página de registro con un mensaje de error
+            response.sendRedirect("./registrarusuario.jsp?error=Error al conectar con la base de datos");
+        }
+    }
 
     protected void buscarUsuario(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -172,10 +219,12 @@ public class UsuarioServlet extends HttpServlet {
         // Verificar si el usuario existe
         boolean usuarioExiste = bd.existeUsuario(usuario, code.encode(clave));
 
-        if (usuarioExiste) {
+        if (usuarioExiste)
+        {
             // Si el usuario se encontró, cargar la página de médicos
             this.cargarPaginaMedicos(request, response);
-        } else {
+        } else
+        {
             // Si no se encontró el usuario, redirigir de vuelta a la página de inicio de sesión con un mensaje de error
             response.sendRedirect("./index.jsp?error=Usuario o contraseña incorrectos");
         }

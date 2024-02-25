@@ -30,6 +30,8 @@
                 box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
             }
         </style>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <!-- Verifica si hay un parámetro de error en la URL y muestra un SweetAlert si es así -->
     </head>
     <body>
 
@@ -59,8 +61,7 @@
                 <p class="text-center mt-3"><a href="index.jsp">Volver al inicio</a></p>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <!-- Verifica si hay un parámetro de error en la URL y muestra un SweetAlert si es así -->
+        
         <%
             String error = request.getParameter("error");
             if (error != null && !error.isEmpty()) {

@@ -346,7 +346,6 @@ public class MedicoServlet extends HttpServlet {
         request.getRequestDispatcher(jspEditar).forward(request, response);
     }
 
-    
     protected void eliminarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         System.out.println("Método eliminar médico");
@@ -361,6 +360,7 @@ public class MedicoServlet extends HttpServlet {
         }
         this.cargarPagina(request, response);
     }
+
     /*
     protected void eliminarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -383,7 +383,7 @@ public class MedicoServlet extends HttpServlet {
             System.out.println("Error: bd es null o la conexión falló");
         }
     }
-    */
+     */
 
     protected void insertarMedico(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
